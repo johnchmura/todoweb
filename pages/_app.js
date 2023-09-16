@@ -1,5 +1,14 @@
-import '@/styles/globals.css'
+import React from 'react';
+import Navbar from '@/components/Navbar';
+import CanvasApp from '@/components/TodoList';
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function App() {
+  return (
+    <>
+      <Navbar />
+      <CanvasApp/>
+    </>
+  );
 }
+
+export default App;
