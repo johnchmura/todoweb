@@ -1,17 +1,17 @@
-// src/components/CanvasApp.js
-
 import React, { useRef, useEffect, useState } from 'react';
+import pop from '@/public/pop.mp3';
 
 function CanvasApp() {
   const canvasRef = useRef(null);
   const circlesRef = useRef([]);
   const [label, setLabel] = useState('');
   const [circleFlag, setCircleFlag] = useState(false);
-
+  const audioRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+    
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (const circle of circlesRef.current) {
@@ -27,7 +27,7 @@ function CanvasApp() {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-
+    audioRef.current = new Audio(pop);
     class MovingCircle {
       constructor(x, y, radius, color, dx = 2, dy = 2, label = '', Lcolor = 'white') {
         this.x = x;
@@ -88,6 +88,7 @@ function CanvasApp() {
       newCircle.onClick = () => {
         // Remove the clicked circle from the state
         circlesRef.current = circlesRef.current.filter((circle) => circle !== newCircle);
+        audioRef.current.play();
       };
       circlesRef.current.push(newCircle);
       setLabel('');

@@ -1,0 +1,30 @@
+
+.navbar {
+    background-color: #333; /* Background color for the navbar */
+    color: #fff; /* Text color */
+    padding: 10px 0; /* Padding around the navbar */
+  }
+  
+  .navbar ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center align the list items */
+  }
+  
+  .navbar li {
+    margin: 0 10px; /* Add some spacing between list items */
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    color: #fff; /* Text color for the links */
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s; /* Smooth color transition on hover */
+  }
+  
+  .navbar a:hover {
+    color: #00bcd4; /* Color on hover */
+  }
+  
