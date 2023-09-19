@@ -34,8 +34,18 @@ function CanvasApp() {
         this.y = y;
         this.radius = radius;
         this.color = color;
-        this.dx = dx;
-        this.dy = dy;
+        if(dx >= .5){
+          this.dx = -1;
+        }
+        else{
+          this.dx = 1;
+        }
+        if(dy >= .5){
+          this.dy = -1;
+        }
+        else{
+          this.dy = 1;
+        }
         this.label = label;
         this.minis = [];
         this.onClick = null; // Callback function to handle click events
@@ -74,7 +84,7 @@ function CanvasApp() {
     }
 
     function createCircle() {
-      const newCircle = new MovingCircle(400, 400, 50, 'blue', 2, 2, label);
+      const newCircle = new MovingCircle((Math.random()*200 + 400), (Math.random()*200 + 150), 50, 'blue', Math.random(), Math.random(), label);
       newCircle.onClick = () => {
         // Remove the clicked circle from the state
         circlesRef.current = circlesRef.current.filter((circle) => circle !== newCircle);

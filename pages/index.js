@@ -5,6 +5,7 @@ import CanvasApp from '@/components/TodoList'
 export default function Home() {
   return (
     <main>
+      <Navbar />
       <CanvasApp/>
     </main>
   )
