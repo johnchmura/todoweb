@@ -4,9 +4,25 @@ import React, { useRef, useEffect, useState } from 'react';
 
 function CanvasApp() {
   const canvasRef = useRef(null);
-  const [circles, setCircles] = useState([]);
+  const circlesRef = useRef([]);
   const [label, setLabel] = useState('');
   const [circleFlag, setCircleFlag] = useState(false);
+
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const circle of circlesRef.current) {
+        circle.move();
+        circle.animateOrbit();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+    
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -61,26 +77,17 @@ function CanvasApp() {
       const newCircle = new MovingCircle(400, 400, 50, 'blue', 2, 2, label);
       newCircle.onClick = () => {
         // Remove the clicked circle from the state
-        setCircles((prevCircles) => prevCircles.filter((circle) => circle !== newCircle));
+        circlesRef.current = circlesRef.current.filter((circle) => circle !== newCircle);
       };
-      setCircles((prevCircles) => [...prevCircles, newCircle]);
+      circlesRef.current.push(newCircle);
       setLabel('');
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (const circle of circles) {
-        circle.move();
-        circle.animateOrbit();
-      }
-      requestAnimationFrame(animate);
     }
     if (circleFlag) {
       createCircle();
       setCircleFlag(false);
     }
-    animate();
-  }, [circles, label, circleFlag]);
+
+  }, [circleFlag, label]);
 
   function newCircle() {
     setCircleFlag(true);
@@ -98,7 +105,7 @@ function CanvasApp() {
           const mouseX = e.clientX - rect.left;
           const mouseY = e.clientY - rect.top;
           
-          for (const circle of circles) {
+          for (const circle of circlesRef.current) {
             const distance = Math.sqrt(
               Math.pow(mouseX - circle.x, 2) + Math.pow(mouseY - circle.y, 2)
             );
