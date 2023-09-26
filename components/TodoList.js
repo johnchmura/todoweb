@@ -3,11 +3,41 @@ import pop from '@/public/pop.mp3';
 import styles from '@/styles/TodoList.module.css';
 
 function CanvasApp() {
+
   const canvasRef = useRef(null);
   const circlesRef = useRef([]);
   const [label, setLabel] = useState('');
   const [circleFlag, setCircleFlag] = useState(false);
   const audioRef = useRef(null);
+
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    const aspectRatio = 16 / 9; // You can adjust this to your desired aspect ratio
+
+    function resizeCanvas() {
+      const screenWidth = window.innerWidth;
+      const canvasWidth = Math.min(screenWidth, 1000); // Limit width to 1000 (or your desired maximum)
+      const canvasHeight = canvasWidth / aspectRatio;
+
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      // Redraw your canvas content here if needed
+    }
+
+    // Initial sizing
+    resizeCanvas();
+
+    // Listen for window resize events
+    window.addEventListener('resize', resizeCanvas);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -65,28 +95,68 @@ function CanvasApp() {
       }
 
       draw() {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+      
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
         ctx.fill();
         ctx.closePath();
-
-        ctx.fillStyle = 'black';
+      
+        // Style for the label text
+        ctx.font = '15px Arial'; // Adjust the font size and family as needed
+        ctx.fillStyle = 'white'; // Text color
+        ctx.textAlign = 'center'; // Center the text horizontally
+        ctx.textBaseline = 'middle'; // Center the text vertically
+      
+        // Draw the label text centered within the circle
         ctx.fillText(this.label, this.x, this.y);
       }
 
-      addMiniCircle() {
-        const orbitCirc = new MiniCircle(this.x, this.y, 20, 'red', 1, 1, 'lol', 'black', this, 100);
+      addMiniCircle(label) {
+        // Calculate the number of existing mini circles
+        const numMiniCircles = this.minis.length;
+      
+        // Calculate the angle increment for evenly distributing mini circles
+        const angleIncrement = (2 * Math.PI) / (numMiniCircles + 1);
+      
+        // Calculate the starting angle
+        let angle = 0;
+      
+        // Create and distribute the new mini circle
+        const orbitCirc = new MiniCircle(
+          this.x + this.distanceFromCenter * Math.cos(angle),
+          this.y + this.distanceFromCenter * Math.sin(angle),
+          20,
+          'red',
+          1,
+          1,
+          label,
+          'black',
+          this,
+          100
+        );
+      
+        // Add the new mini circle to the parent's minis array
         this.minis.push(orbitCirc);
+      
+        // Update the angles for the existing mini circles
+        this.minis.forEach((miniCircle) => {
+          miniCircle.angle = angle;
+          miniCircle.move(); // Update the position
+          angle += angleIncrement;
+        });
       }
     }
 
     class MiniCircle extends MovingCircle {
-      constructor(x, y, radius, color, dx = 2, dy = 2, label = '', Lcolor = 'white', parent = null, distanceFromCenter = 50) {
-        super(x, y, radius, color, dx, dy, label, Lcolor);
+      constructor(x, y, radius, color, dx = 2, dy = 2,label, Lcolor = 'white', parent = null, distanceFromCenter = 50) {
+        super(x, y, radius, color, dx, dy);
         this.distanceFromCenter = distanceFromCenter;
         this.angle = 0;
         this.parent = parent || null;
+        this.label = label;
       }
 
       move() {
@@ -113,11 +183,6 @@ function CanvasApp() {
         audioRef.current.play();
       };
 
-      newCircle.onContextMenu = (e) => {
-        e.preventDefault(); // Prevent the default context menu
-        newCircle.addMiniCircle(); // Add a mini circle when right-clicked
-      };
-
       circlesRef.current.push(newCircle);
       setLabel('');
     }
@@ -141,7 +206,8 @@ function CanvasApp() {
         );
         if (distance <= circle.radius) {
           if (circle.addMiniCircle) {
-            circle.addMiniCircle();
+            circle.addMiniCircle(label);
+            setLabel('');
           }
           break;
         }
@@ -162,39 +228,68 @@ function CanvasApp() {
     setCircleFlag(true);
   }
 
+  function handleKeyDown(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent the default form submission behavior
+      newCircle();
+    }
+  }
+  
   function handleCanvasClick(e) {
     if (!e.shiftKey) {
       const canvas = canvasRef.current;
       const rect = canvas.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
-
+  
+      // Check if any mini circle was clicked
+      for (const circle of circlesRef.current) {
+        // Check if the click is within the mini circle's radius
+        for (const miniCircle of circle.minis) {
+          const distance = Math.sqrt(
+            Math.pow(mouseX - miniCircle.x, 2) + Math.pow(mouseY - miniCircle.y, 2)
+          );
+          if (distance <= miniCircle.radius) {
+            // Remove the mini circle from its parent's minis array
+            audioRef.current.play();
+            circle.minis = circle.minis.filter(mc => mc !== miniCircle);
+            
+            return; // Exit the loop after removing the mini circle
+          }
+        }
+      }
+  
+      // Check if any main circle was clicked
       for (const circle of circlesRef.current) {
         const distance = Math.sqrt(
           Math.pow(mouseX - circle.x, 2) + Math.pow(mouseY - circle.y, 2)
         );
         if (distance <= circle.radius) {
           if (circle.onClick) {
-            circle.onClick();
+            if(circle.minis.length == 0){
+              circle.onClick();
+            }
           }
           break;
         }
       }
     }
   }
+  
 
   return (
-    <div>
+    <div className={styles.todo}>
       <div className="canvas-container">
         <canvas
           ref={canvasRef}
-          width={800}
+          width={1200}
           height={600}
           onClick={handleCanvasClick}
         ></canvas>
       </div>
-      <div className="styles.input-container">
-        <label className="styles.input-label" htmlFor="labelInput">
+      <div className={styles.container}>
+        <div>
+        <label className={styles.label} htmlFor="labelInput">
           Label:
         </label>
         <input
@@ -202,9 +297,11 @@ function CanvasApp() {
           id="labelInput"
           value={label}
           onChange={(e) => setLabel(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="Enter label"
         />
-        <button className="styles.create-button" onClick={newCircle}>
+        </div>
+        <button className={styles.button} onClick={newCircle}>
           Create New Task!
         </button>
       </div>
