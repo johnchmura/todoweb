@@ -106,7 +106,7 @@ function CanvasApp() {
       
         // Style for the label text
         ctx.font = '15px Arial'; // Adjust the font size and family as needed
-        ctx.fillStyle = 'white'; // Text color
+        ctx.fillStyle = 'black'; // Text color
         ctx.textAlign = 'center'; // Center the text horizontally
         ctx.textBaseline = 'middle'; // Center the text vertically
       
@@ -140,18 +140,29 @@ function CanvasApp() {
       
         // Add the new mini circle to the parent's minis array
         this.minis.push(orbitCirc);
-      
-        // Update the angles for the existing mini circles
+        this.adjustMinis();
+        
+      }
+
+      adjustMinis() {
+
+        const numMiniCircles = this.minis.length-1;
+
+        const angleIncrement = (2 * Math.PI) / (numMiniCircles + 1);
+        
+        let angle = 0;
+
         this.minis.forEach((miniCircle) => {
           miniCircle.angle = angle;
           miniCircle.move(); // Update the position
           angle += angleIncrement;
         });
+
       }
     }
 
     class MiniCircle extends MovingCircle {
-      constructor(x, y, radius, color, dx = 2, dy = 2,label, Lcolor = 'white', parent = null, distanceFromCenter = 50) {
+      constructor(x, y, radius, color, dx = 2, dy = 2,label, Lcolor = 'black', parent = null, distanceFromCenter = 50) {
         super(x, y, radius, color, dx, dy);
         this.distanceFromCenter = distanceFromCenter;
         this.angle = 0;
@@ -253,6 +264,7 @@ function CanvasApp() {
             // Remove the mini circle from its parent's minis array
             audioRef.current.play();
             circle.minis = circle.minis.filter(mc => mc !== miniCircle);
+            circle.adjustMinis();
             
             return; // Exit the loop after removing the mini circle
           }
