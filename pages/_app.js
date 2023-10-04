@@ -1,19 +1,25 @@
-import React from 'react';
-import Navbar from '@/components/Navbar';
-import CanvasApp from '@/components/TodoList';
-import index from '@/pages/index'
-import { useRouter } from 'next/router';
+import '../styles/globals.css';
+import Navbar from '../components/Navbar';
+import { Toaster } from 'react-hot-toast';
+import { UserContext } from '../lib/context';
+import { auth, db } from '../lib/firebase';
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { getDoc, doc, onSnapshot} from 'firebase/firestore';
+import { useUserData } from '../lib/hooks';
 
-function App() {
-  
-  const router = useRouter();
+function MyApp({ Component, pageProps }) {
 
+  const {user, username} = useUserData();
   return (
     <>
+    <UserContext.Provider value={{ user, username }}>
       <Navbar />
-      {router.pathname === "/" && <CanvasApp/>}
+      <Component {...pageProps} />
+      <Toaster />
+    </UserContext.Provider>
     </>
   );
 }
 
-export default App;
+export default MyApp;
