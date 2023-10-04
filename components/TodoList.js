@@ -96,7 +96,10 @@ function CanvasApp() {
 
       draw() {
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
+        if(canvas != null){
+          const ctx = canvas.getContext('2d');
+        }
+        
       
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);

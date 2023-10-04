@@ -15,7 +15,7 @@ export default function Navbar() {
       <ul>
         <li>
           <Link href="/" legacyBehavior>
-            <button className="btn-logo">FEED</button>
+            <button className="btn-logo">My List</button>
           </Link>
         </li>
 
@@ -23,9 +23,6 @@ export default function Navbar() {
         {username && (
           <>
             <li className="push-left">
-              <Link href="/admin" legacyBehavior>
-                <button className="btn-blue">Write Posts</button>
-              </Link>
             </li>
             <Link href ="/enter" legacyBehavior>
               <button className="btn-grey" onClick={() => signOut(auth)}>Sign Out</button>

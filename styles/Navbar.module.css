@@ -1,30 +1,56 @@
+/* Navbar.module.css */
 
 .navbar {
-    background-color: #333; /* Background color for the navbar */
-    color: #fff; /* Text color */
-    padding: 10px 0; /* Padding around the navbar */
-  }
-  
-  .navbar ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center; /* Center align the list items */
-  }
-  
-  .navbar li {
-    margin: 0 10px; /* Add some spacing between list items */
-  }
-  
-  .navbar a {
-    text-decoration: none;
-    color: #fff; /* Text color for the links */
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s; /* Smooth color transition on hover */
-  }
-  
-  .navbar a:hover {
-    color: #00bcd4; /* Color on hover */
-  }
-  
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+}
+
+/* Apply classes to the <ul> and <li> elements */
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.listItem {
+  display: inline;
+  margin-right: 20px;
+}
+
+.btn-logo {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.btn-blue {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.btn-grey {
+  background-color: grey;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+/* Apply a class to the <img> element */
+.navImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.googleSignInImg {
+  width: 20px; /* Adjust the desired width */
+  height: 20px; /* Adjust the desired height */
+  border-radius: 50%;
+}
