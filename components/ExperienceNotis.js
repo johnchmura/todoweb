@@ -17,7 +17,7 @@ export default function ExperienceNotis({ x, y, points }) {
         position: 'absolute',
         top: `${y}px`,
         left: `${x}px`,
-        backgroundColor: 'white',
+        backgroundColor: 'black',
         color: 'white',
         padding: '4px 8px',
         borderRadius: '4px',

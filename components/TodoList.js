@@ -5,7 +5,7 @@ import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { UserContext } from '../lib/context';
 import { db } from '@/lib/firebase';
-import ExperienceNotis from './experienceNotis';
+import ExperienceNotis from './ExperienceNotis';
 
 function CanvasApp() {
   const {user, username} = useContext(UserContext);
