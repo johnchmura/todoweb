@@ -1,39 +1,68 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import pop from '@/public/pop.mp3';
 import styles from '@/styles/TodoList.module.css';
+import { doc, updateDoc, getDoc } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { UserContext } from '../lib/context';
+import { db } from '@/lib/firebase';
+import ExperienceNotis from './experienceNotis';
 
 function CanvasApp() {
-
+  const {user, username} = useContext(UserContext);
   const canvasRef = useRef(null);
   const circlesRef = useRef([]);
   const [label, setLabel] = useState('');
   const [circleFlag, setCircleFlag] = useState(false);
   const audioRef = useRef(null);
 
+  const [xpNotifications, setXpNotifications] = useState([]);
+
+  async function updateExperiencePoints(points) {
+    if (user) {
+      const userDocRef = doc(db, 'users', user.uid);
+  
+      // Fetch the user's document
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        let currentExperiencePoints = userData.experiencePoints || 0; // Default to 0 if not initialized
+  
+        // Update the experiencePoints
+        currentExperiencePoints += points;
+  
+        // Update the Firestore document with the new experience points value
+        await updateDoc(userDocRef, { experiencePoints: currentExperiencePoints });
+      } else {
+        console.error('User document does not exist.');
+      }
+    }
+  }
+  
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
-    const aspectRatio = 16 / 9; // You can adjust this to your desired aspect ratio
+    const aspectRatio = 16 / 9; 
 
     function resizeCanvas() {
       const screenWidth = window.innerWidth;
-      const canvasWidth = Math.min(screenWidth, 1000); // Limit width to 1000 (or your desired maximum)
+      const canvasWidth = Math.min(screenWidth, 1000);
       const canvasHeight = canvasWidth / aspectRatio;
 
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
 
-      // Redraw your canvas content here if needed
+      
     }
 
-    // Initial sizing
+    
     resizeCanvas();
 
-    // Listen for window resize events
+   
     window.addEventListener('resize', resizeCanvas);
 
-    // Cleanup the event listener on component unmount
+    
     return () => {
       window.removeEventListener('resize', resizeCanvas);
     };
@@ -195,6 +224,8 @@ function CanvasApp() {
       newCircle.onClick = () => {
         circlesRef.current = circlesRef.current.filter(circle => circle !== newCircle);
         audioRef.current.play();
+        updateExperiencePoints(10);
+
       };
 
       circlesRef.current.push(newCircle);
@@ -255,7 +286,6 @@ function CanvasApp() {
       const rect = canvas.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
-  
       // Check if any mini circle was clicked
       for (const circle of circlesRef.current) {
         // Check if the click is within the mini circle's radius
@@ -266,10 +296,19 @@ function CanvasApp() {
           if (distance <= miniCircle.radius) {
             // Remove the mini circle from its parent's minis array
             audioRef.current.play();
+            const relativeX = mouseX - miniCircle.x;
+            const relativeY = mouseY - miniCircle.y;
+            setXpNotifications(prevNotifications => [
+              ...prevNotifications,
+              { x: e.clientX, y: e.clientY, points: 5 },
+              
+            ]);
+
             circle.minis = circle.minis.filter(mc => mc !== miniCircle);
             circle.adjustMinis();
+            updateExperiencePoints(5);
             
-            return; // Exit the loop after removing the mini circle
+            return; 
           }
         }
       }
@@ -283,6 +322,11 @@ function CanvasApp() {
           if (circle.onClick) {
             if(circle.minis.length == 0){
               circle.onClick();
+              setXpNotifications(prevNotifications => [
+                ...prevNotifications,
+                { x: e.clientX, y: e.clientY, points: 10},
+                
+              ]);
             }
           }
           break;
@@ -301,6 +345,14 @@ function CanvasApp() {
           height={600}
           onClick={handleCanvasClick}
         ></canvas>
+        {xpNotifications.map((notification, index) => (
+          <ExperienceNotis
+            key={index}
+            x={notification.x}
+            y={notification.y}
+            points={notification.points}
+          />
+        ))}
       </div>
       <div className={styles.container}>
         <div>
@@ -319,6 +371,7 @@ function CanvasApp() {
         <button className={styles.button} onClick={newCircle}>
           Create New Task!
         </button>
+        
       </div>
     </div>
   );
