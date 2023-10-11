@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { getDoc, doc, onSnapshot} from 'firebase/firestore';
 import { useUserData } from '../lib/hooks';
+import ProgressBar from '../components/ProgressBar';
 
 function MyApp({ Component, pageProps }) {
 
@@ -15,7 +16,10 @@ function MyApp({ Component, pageProps }) {
     <>
     <UserContext.Provider value={{ user, username }}>
       <Navbar />
+      
+      {username && <ProgressBar />}
       <Component {...pageProps} />
+      
       <Toaster />
     </UserContext.Provider>
     </>

@@ -28,10 +28,10 @@ function CanvasApp() {
         const userData = userDoc.data();
         let currentExperiencePoints = userData.experiencePoints || 0; // Default to 0 if not initialized
   
-        // Update the experiencePoints
+        
         currentExperiencePoints += points;
   
-        // Update the Firestore document with the new experience points value
+        
         await updateDoc(userDocRef, { experiencePoints: currentExperiencePoints });
       } else {
         console.error('User document does not exist.');

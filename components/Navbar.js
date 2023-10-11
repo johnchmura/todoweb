@@ -5,17 +5,17 @@ import { useContext } from 'react';
 import { UserContext } from '../lib/context';
 import styles from '@/styles/Navbar.module.css';
 
-// Top navbar
+
 export default function Navbar() {
 
-  const { user, username } = useContext(UserContext)
+  const { user, username } = useContext(UserContext);
 
   return (
     <nav className="navbar">
       <ul>
         <li>
           <Link href="/" legacyBehavior>
-            <button className="btn-logo">My List</button>
+            <button className="btn-logo">TodoWeb</button>
           </Link>
         </li>
 
