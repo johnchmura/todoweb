@@ -27,11 +27,7 @@ export default function Navbar() {
             <Link href ="/enter" legacyBehavior>
               <button className="btn-grey" onClick={() => signOut(auth)}>Sign Out</button>
             </Link>
-            <li>
-              <Link href={`/${username}`} legacyBehavior>
-                <img src={user?.photoURL} />
-              </Link>
-            </li>
+            <img src={user?.photoURL} />
           </>
         )}
 

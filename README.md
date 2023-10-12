@@ -1,38 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+TodoWeb - Interactive Todo List
 
-## Getting Started
+TodoWeb is an interactive and fun-to-use productivity tool for managing your tasks. Designed with a special focus on providing a productive experience for individuals with ADHD, this React-based application turns task management into an enjoyable journey.
 
-First, run the development server:
+Features
+Interactive Task Creation: Create tasks by clicking on the canvas, with colorful circles representing each task.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Experience Points: Gain experience points by completing tasks, and watch your productivity level grow.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mini Circles: Break down tasks into mini circles and complete them one by one.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Leveling Up: As you complete tasks, you can level up, signifying your increasing productivity.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Usage
+Create a Task: Click on the canvas to create a new task represented by a colorful circle.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Complete a Task: Click on a task circle to mark it as completed and earn experience points.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Mini Circles: For complex tasks, break them down into mini circles by holding down the Shift key and clicking on a task.
 
-## Learn More
+Level Up: Gain experience points as you complete tasks. As your experience points increase, you'll level up in productivity.
 
-To learn more about Next.js, take a look at the following resources:
+Dependencies
+TodoWeb relies on the following dependencies:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+React: A JavaScript library for building user interfaces.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Firebase: A cloud-based platform for building web and mobile application.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Happy Task Management with TodoWeb!
