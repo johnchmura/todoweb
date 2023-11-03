@@ -137,7 +137,10 @@ button.btn-blue {
   background-color: var(--color-blue);
   color: white;
 }
+button.btn-calendar {
+  background: rgba(0,0,0,0);
 
+}
 button.btn-red {
   background-color: var(--color-red);
   color: white;
@@ -227,7 +230,9 @@ input[type="file"] {
 .push-left {
   margin-left: auto;
 }
-
+.push-lefter {
+  margin-left: auto;
+}
 .text-sm {
   font-size: 0.85rem;
 }

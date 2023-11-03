@@ -3,7 +3,7 @@ import { auth } from '../lib/firebase';
 import { signOut } from 'firebase/auth';
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';
-import styles from '@/styles/Navbar.module.css';
+
 
 
 export default function Navbar() {
@@ -24,20 +24,33 @@ export default function Navbar() {
           <>
             <li className="push-left">
             </li>
+            <Link href ="/calendar" legacyBehavior>
+              <button className='btn-calendar'>
+              <img src="/calendar.png" />
+              </button>
+            </Link>
             <Link href ="/enter" legacyBehavior>
               <button className="btn-grey" onClick={() => signOut(auth)}>Sign Out</button>
             </Link>
             <img src={user?.photoURL} />
           </>
         )}
-
         {/* user is not signed OR has not created username */}
+        
+        
         {!username && (
-          <li>
+          <>
+          <li className='push-left'>
+          </li>
+          <Link href ="/calendar" legacyBehavior>
+              <button className='btn-calendar'>
+              <img src="/calendar.png" />
+              </button>
+            </Link>
             <Link href="/enter" legacyBehavior>
               <button className="btn-blue">Log in</button>
             </Link>
-          </li>
+          </>
         )}
       </ul>
     </nav>

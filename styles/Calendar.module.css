@@ -1,0 +1,127 @@
+/* Calendar Container */
+.calendar {
+  font-family: Arial, sans-serif;
+  width: 900px;
+  margin: 0 auto;
+  border: 2px solid #3498db;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f9f9f9;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 12px 12px 0 0;
+}
+
+.header button {
+  background: #3498db;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin: 0 8px;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Days of the week */
+.days {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+  background-color: #f2f2f2;
+  font-weight: bold;
+  border-radius: 0 0 12px 12px;
+}
+
+.day {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  min-width: 3rem;
+  font-size: 16px;
+  margin: 2px;
+}
+
+/* Calendar Grid */
+.week {
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: space-around;
+}
+
+.day {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.3s;
+}
+
+.day:hover {
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 50%;
+}
+
+/* Styles for empty days */
+.empty-day {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  visibility: hidden;
+  opacity: 0.5; /* Reduced opacity for empty days */
+}
+
+/* Highlight the current day */
+.today {
+  background-color: #f9a825;
+  color: #fff;
+  border-radius: 50%;
+}
+
+/* Highlighted days (e.g., events or special days) */
+.eventDay {
+  background-color: #e74c3c;
+  color: #fff;
+  border-radius: 50%;
+}
+
+/* Add hover effect for highlighted days */
+.eventDay:hover {
+  background-color: #c0392b;
+}
+
+/* Styling for day boxes and text inputs */
+.dayBox {
+  position: relative;
+  border: 1px solid #ddd; /* Subtle border for day boxes */
+  background-color: #fff;
+}
+
+.dayNumber {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.textBox {
+  width: 80px;
+  height: 80px;
+  border: none;
+  background: #f9f9f9;
+  text-align: center;
+  font-size: 14px;
+  resize: none; /* Prevent text area resizing */
+}
